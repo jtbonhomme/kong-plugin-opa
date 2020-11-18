@@ -43,7 +43,7 @@ local _M = {}
 
 function _M.execute(conf)
     -- local authorization = ngx.var.http_authorization
-    local authorization = ngx.req.get_headers()["x-userinfo"]
+    local authorization = ngx.req.get_headers()["X-Userinfo"]
 
     -- decode JWT token
     local token = {}
@@ -54,6 +54,11 @@ function _M.execute(conf)
     if authorization and string.find(authorization, "Bearer") then
         local encoded_token = authorization:gsub("Bearer ", "")
         token = jwt:load_jwt(encoded_token)
+        kong.log.debug(interp("Access requested for user ${subject}", {
+            method = input.method,
+            path = input.path,
+            subject = token.payload.sub
+        }))
     end
 
     -- input document that will be send to opa
