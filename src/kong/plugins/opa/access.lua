@@ -58,8 +58,6 @@ function _M.execute(conf)
         local encoded_token = authorization:gsub("Bearer ", "")
         token = jwt:load_jwt(encoded_token)
         kong.log.info(interp("Access requested for user ${subject}", {
-            method = input.method,
-            path = input.path,
             subject = token.payload.sub
         }))
     end
