@@ -1,17 +1,17 @@
 rockspec_format = "3.0"
-package = "kong-plugin-opa"
-version = "0.1.1-2"
+package = "kong-opa-plugin"
+version = "0.0.1"
 source = {
-   url = "git+https://github.com/open-policy-agent/contrib.git",
-   tag = "v0.1.1",
+   url = "git+https://github.com/jtbonhomme/kong-plugin-opa.git",
+   tag = "v0.0.1",
 }
 description = {
-   summary = "Integrate the Open Policy Agent (OPA) with Kong API Gateway for API access management",
+   summary = "Integrate the Open Policy Agent (OPA) with Kong API Gateway for API access management, fork of opa contrib plugin",
    detailed = [[
-      see https://github.com/open-policy-agent/contrib/tree/master/kong_plugin_opa for more information
+      see https://github.com/jtbonhomme/kong-plugin-opa/tree/master/kong_plugin_opa for more information
    ]],
-   homepage = "https://github.com/open-policy-agent/contrib/tree/master/kong_plugin_opa",
-   issues_url = "https://github.com/open-policy-agent/contrib/issues",
+   homepage = "https://github.com/jtbonhomme/kong-plugin-opa/tree/master/kong_plugin_opa",
+   issues_url = "https://github.com/jtbonhomme/kong-plugin-opa/issues",
 }
 dependencies = {
    "lua-cjson",
