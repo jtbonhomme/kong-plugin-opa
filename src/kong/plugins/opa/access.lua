@@ -67,9 +67,9 @@ function _M.execute(conf)
     local authenticated_credential = ngx.ctx.authenticated_credential
     if authenticated_credential then
         kong.log.info(interp("authenticated_credential id: ${id} username: ${username}", {
-            id = authenticated_credential.id
+            id = authenticated_credential.id,
             username = authenticated_credential.username
-        }))    
+        }))
     end
 
     -- input document that will be send to opa
@@ -93,9 +93,10 @@ function _M.execute(conf)
     end
 
     -- access allowed
-    kong.log.debug(interp("Access allowed to ${method} ${path} for user ${subject}", {
+--    kong.log.debug(interp("Access allowed to ${method} ${path} for user ${subject}", {
+    kong.log.debug(interp("Access allowed to ${method} ${path} for user", {
         method = input.method,
-        path = input.path,
+        path = input.path
         -- subject = token.payload.sub
     }))
 end
