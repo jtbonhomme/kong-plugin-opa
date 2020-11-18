@@ -54,7 +54,7 @@ function _M.execute(conf)
     --     local encoded_token = authorization:gsub("Bearer ", "")
     --     token = jwt:load_jwt(encoded_token)
     -- end
-    if authorization and string.find(authorization, "Bearer") then
+    if authorization then
         local encoded_token = authorization:gsub("Bearer ", "")
         token = jwt:load_jwt(encoded_token)
         kong.log.info(interp("Access requested for user ${subject}", {
