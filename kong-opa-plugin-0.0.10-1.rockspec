@@ -1,9 +1,9 @@
 rockspec_format = "3.0"
 package = "kong-opa-plugin"
-version = "0.0.8-1"
+version = "0.0.10-1"
 source = {
    url = "git+https://github.com/jtbonhomme/kong-plugin-opa.git",
-   tag = "v0.0.8",
+   tag = "v0.0.10",
 }
 description = {
    summary = "Integrate the Open Policy Agent (OPA) with Kong API Gateway for API access management, fork of opa contrib plugin",
