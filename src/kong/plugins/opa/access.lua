@@ -42,10 +42,15 @@ end
 local _M = {}
 
 function _M.execute(conf)
-    local authorization = ngx.var.http_authorization
+    -- local authorization = ngx.var.http_authorization
+    local authorization = ngx.req.get_headers()["x-userinfo"]
 
     -- decode JWT token
     local token = {}
+    -- if authorization and string.find(authorization, "Bearer") then
+    --     local encoded_token = authorization:gsub("Bearer ", "")
+    --     token = jwt:load_jwt(encoded_token)
+    -- end
     if authorization and string.find(authorization, "Bearer") then
         local encoded_token = authorization:gsub("Bearer ", "")
         token = jwt:load_jwt(encoded_token)
