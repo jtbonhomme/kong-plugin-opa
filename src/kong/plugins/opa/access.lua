@@ -43,10 +43,10 @@ local _M = {}
 
 function _M.execute(conf)
     -- local authorization = ngx.var.http_authorization
-    local x-userinfo = ngx.req.get_headers()["X-Userinfo"]
+    local x_userinfo = ngx.req.get_headers()["X-Userinfo"]
 
     kong.log.info(interp("authorization header: ${value}", {
-        value = x-userinfo
+        value = x_userinfo
     }))
     -- decode JWT token
     local token = {}
@@ -55,7 +55,7 @@ function _M.execute(conf)
     --     token = jwt:load_jwt(encoded_token)
     -- end
     if x-userinfo then
-        local userinfo = cjson.encode(x-userinfo)
+        local userinfo = cjson.encode(x_userinfo)
         token = assert(cjson_safe.decode(userinfo))
         kong.log.info(interp("Access requested for user ${subject}", {
             subject = token.sub
