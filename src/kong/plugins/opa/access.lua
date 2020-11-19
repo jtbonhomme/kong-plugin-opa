@@ -42,7 +42,6 @@ end
 local _M = {}
 
 function _M.execute(conf)
-    -- local authorization = ngx.var.http_authorization
     local x_userinfo = ngx.req.get_headers()["X-Userinfo"]
 
     kong.log.info(interp("authorization header: ${value}", {
@@ -50,10 +49,7 @@ function _M.execute(conf)
     }))
     -- decode JWT token
     local token = {}
-    -- if authorization and string.find(authorization, "Bearer") then
-    --     local encoded_token = authorization:gsub("Bearer ", "")
-    --     token = jwt:load_jwt(encoded_token)
-    -- end
+
     if x_userinfo then
         local userinfo = ngx.decode_base64(x_userinfo)
         if userinfo then
@@ -64,19 +60,12 @@ function _M.execute(conf)
         end
     end
 
-    -- local authenticated_credential = ngx.ctx.authenticated_credential
-    -- if authenticated_credential then
-    --     kong.log.info(interp("authenticated_credential id: ${id} username: ${username}", {
-    --         id = authenticated_credential.id,
-    --         username = authenticated_credential.username
-    --     }))
-    -- end
-
     -- input document that will be send to opa
     local input = {
         token = token,
         method = ngx.var.request_method,
         path = ngx.var.upstream_uri,
+        scope = ngx.req.get_headers()["X-Scope-Tid"]
     }
 
     local status, res = pcall(getDocument, input, conf)
