@@ -43,10 +43,10 @@ local _M = {}
 
 function _M.execute(conf)
     -- local authorization = ngx.var.http_authorization
-    local authorization = ngx.req.get_headers()["X-Userinfo"]
+    local x-userinfo = ngx.req.get_headers()["X-Userinfo"]
 
     kong.log.info(interp("authorization header: ${value}", {
-        value = authorization
+        value = x-userinfo
     }))
     -- decode JWT token
     local token = {}
@@ -54,21 +54,21 @@ function _M.execute(conf)
     --     local encoded_token = authorization:gsub("Bearer ", "")
     --     token = jwt:load_jwt(encoded_token)
     -- end
-    if authorization then
-        local encoded_token = authorization:gsub("Bearer ", "")
-        token = jwt:load_jwt(encoded_token)
+    if x-userinfo then
+        local userinfo = cjson.encode(x-userinfo)
+        token = assert(cjson_safe.decode(userinfo))
         kong.log.info(interp("Access requested for user ${subject}", {
             subject = token.sub
         }))
     end
 
-    local authenticated_credential = ngx.ctx.authenticated_credential
-    if authenticated_credential then
-        kong.log.info(interp("authenticated_credential id: ${id} username: ${username}", {
-            id = authenticated_credential.id,
-            username = authenticated_credential.username
-        }))
-    end
+    -- local authenticated_credential = ngx.ctx.authenticated_credential
+    -- if authenticated_credential then
+    --     kong.log.info(interp("authenticated_credential id: ${id} username: ${username}", {
+    --         id = authenticated_credential.id,
+    --         username = authenticated_credential.username
+    --     }))
+    -- end
 
     -- input document that will be send to opa
     local input = {
