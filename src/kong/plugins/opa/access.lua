@@ -54,12 +54,14 @@ function _M.execute(conf)
     --     local encoded_token = authorization:gsub("Bearer ", "")
     --     token = jwt:load_jwt(encoded_token)
     -- end
-    if x-userinfo then
-        local userinfo = cjson.encode(x_userinfo)
-        token = assert(cjson_safe.decode(userinfo))
-        kong.log.info(interp("Access requested for user ${subject}", {
-            subject = token.sub
-        }))
+    if x_userinfo then
+        local userinfo = ngx.decode_base64(x_userinfo)
+        if userinfo then
+            token = assert(cjson_safe.decode(userinfo))
+            kong.log.info(interp("Access requested for user ${subject}", {
+                subject = token.sub
+            }))
+        end
     end
 
     -- local authenticated_credential = ngx.ctx.authenticated_credential
