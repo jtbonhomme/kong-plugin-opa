@@ -60,12 +60,19 @@ function _M.execute(conf)
         end
     end
 
+    -- get x-scope-tid header
+    local scope = ""
+    local xscope = ngx.req.get_headers()["X-Scope-Tid"]
+    if xscope then
+        scope = xscope
+    end
+
     -- input document that will be send to opa
     local input = {
         token = token,
         method = ngx.var.request_method,
         path = ngx.var.upstream_uri,
-        scope = ngx.req.get_headers()["X-Scope-Tid"]
+        scope = scope
     }
 
     local status, res = pcall(getDocument, input, conf)
